@@ -181,6 +181,15 @@ void TVTermApp::newTerm()
 {
     using namespace tvterm;
     TRect r = deskTop->getExtent();
+
+    // dont spawn fullscreen if we have atleast 80x25 cells of free space
+    if (r.b.x - r.a.x > 80 && r.b.y - r.a.y > 25)
+    {
+        r.a.x = r.a.y = 1;
+        r.b.x = r.a.x + 80;
+        r.b.y = r.a.y + 25;
+    }
+
     auto *term = TerminalActivity::create( TerminalWindow::viewSize(r),
                                            VTermAdapter::create,
                                            VTermAdapter::childActions,
